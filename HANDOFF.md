@@ -1,7 +1,7 @@
 # Reading Ladder — Handoff
 
 **For:** ISH English & EAL department · **Updated:** 2026-06-15
-**Repository / live site:** _not deployed yet_ — see "Deploy" below (suggested repo: `ish-reading-ladder`).
+**Live site:** https://tanasel.github.io/ish-reading-ladder/ · **Repository:** https://github.com/tanasel/ish-reading-ladder (public)
 
 Reading Ladder is a **GDPR-safe text simplifier for EAL** — a free alternative to Diffit. A teacher pastes their
 own text; the tool writes a prompt; the teacher runs it through ISH's approved AI and pastes the reply back; the
