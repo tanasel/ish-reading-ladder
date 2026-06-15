@@ -16,9 +16,19 @@
     const theme = store.get("theme", "light");
     root.setAttribute("data-theme", theme);
     syncTheme(theme);
+    const style = store.get("style", "calm"); // EAL tool → calm by default
+    root.setAttribute("data-style", style);
+    syncStyle(style);
     setToggle("fontBtn", "data-font", "dyslexic", store.get("font", false));
     setToggle("sizeBtn", "data-size", "big", store.get("size", false));
     setToggle("contrastBtn", "data-contrast", "high", store.get("contrast", false));
+  }
+  function syncStyle(style) {
+    const b = $("#styleBtn");
+    if (!b) return;
+    const calm = style === "calm";
+    b.textContent = calm ? "✦ Bold" : "✦ Calm";       // shows the style you'd switch TO
+    b.setAttribute("aria-label", calm ? "Switch to the bold look" : "Switch to the calm, EAL-friendly look");
   }
   function syncTheme(theme) {
     const b = $("#themeBtn");
@@ -52,6 +62,12 @@
       root.setAttribute("data-theme", next);
       store.set("theme", next);
       syncTheme(next);
+    });
+    $("#styleBtn").addEventListener("click", () => {
+      const next = root.getAttribute("data-style") === "calm" ? "bold" : "calm";
+      root.setAttribute("data-style", next);
+      store.set("style", next);
+      syncStyle(next);
     });
     const toggles = [["fontBtn", "data-font", "dyslexic", "font"], ["sizeBtn", "data-size", "big", "size"], ["contrastBtn", "data-contrast", "high", "contrast"]];
     toggles.forEach(([id, attr, on, key]) => {

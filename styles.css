@@ -378,6 +378,47 @@ kbd { font-family: var(--font-mono); font-size: 0.8em; background: var(--paper);
   .input:focus, .lvl__name:focus, .toggle:focus, .btn:focus { outline: 2px solid; outline-offset: 2px; }
 }
 
+/* ============================================================
+   "CALM" variant — EAL-friendly brutalism. Same bones (thick ink
+   borders, offset shadows, Space Grotesk), but: ONE soft accent
+   instead of five, NO rotation, neutral backgrounds behind every
+   bit of student-read text, bigger + airier passages, no dot-grid.
+   ============================================================ */
+[data-style="calm"] {
+  /* one soft accent (teal); everything else a single calm neutral */
+  --cyan-t: #d8ebee;
+  --pink-t: #eef1f5; --lime-t: #eef1f5; --yellow-t: #eef1f5; --violet-t: #eef1f5; --orange-t: #eef1f5;
+  --dot: transparent;
+  /* slightly gentler shadows */
+  --sh: 4px 4px 0 var(--ink);
+  --sh-sm: 3px 3px 0 var(--ink);
+  --sh-xs: 2px 2px 0 var(--ink);
+  --shadow: var(--sh);
+  --shadow-sm: var(--sh-sm);
+}
+[data-theme="dark"][data-style="calm"] {
+  --cyan-t: #143b45;
+  --pink-t: #262340; --lime-t: #262340; --yellow-t: #262340; --violet-t: #262340; --orange-t: #262340;
+}
+[data-style="calm"] body::before { display: none; }
+/* no tilt near reading text */
+[data-style="calm"] .step__n,
+[data-style="calm"] .level__h,
+[data-style="calm"] .level__summary { transform: none; }
+/* neutral, single-family fills */
+[data-style="calm"] .loop__step { background: var(--surface-2); }
+[data-style="calm"] .step__n { background: var(--cyan-t); }
+[data-style="calm"] .level__h { background: var(--surface-2); color: var(--ink); }
+[data-style="calm"] .qtype { background: var(--surface-2); }   /* label text carries the meaning, not colour */
+[data-style="calm"] .privacy { background: var(--surface-2); }
+[data-style="calm"] .badge--count { background: var(--paper); }
+/* bigger, airier reading for language learners */
+[data-style="calm"] .level { padding: clamp(18px, 2.6vw, 30px); }
+[data-style="calm"] .level__passage { font-size: 1.16rem; line-height: 1.95; }
+[data-style="calm"] .level__sec { margin-top: 26px; padding-top: 20px; }
+[data-style="calm"] .glossary { gap: 9px 18px; }
+[data-style="calm"] .questions, [data-style="calm"] .starters { gap: 16px; }
+
 /* ---------- print: clean worksheets (drop the brutalist shadows) ---------- */
 @media print {
   @page { margin: 16mm; }

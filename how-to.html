@@ -34,6 +34,7 @@
     <div class="topbar__tools">
       <a class="btn btn--primary btn--sm" href="index.html">← Back to the tool</a>
       <button class="btn btn--ghost btn--sm" id="fontBtn" type="button" aria-pressed="false">Aa font</button>
+      <button class="btn btn--ghost btn--sm" id="styleBtn" type="button">✦ Bold</button>
       <button class="btn btn--ghost btn--sm" id="themeBtn" type="button">🌙 Dark</button>
     </div>
   </header>
@@ -151,6 +152,9 @@
         var theme = S.get("theme", "light");
         root.setAttribute("data-theme", theme);
         document.getElementById("themeBtn").textContent = theme === "dark" ? "☀ Light" : "🌙 Dark";
+        var style = S.get("style", "calm");
+        root.setAttribute("data-style", style);
+        document.getElementById("styleBtn").textContent = style === "calm" ? "✦ Bold" : "✦ Calm";
         if (S.get("font", false)) root.setAttribute("data-font", "dyslexic"); else root.removeAttribute("data-font");
         if (S.get("size", false)) root.setAttribute("data-size", "big");
         if (S.get("contrast", false)) root.setAttribute("data-contrast", "high");
@@ -159,6 +163,9 @@
       document.getElementById("themeBtn").addEventListener("click", function () {
         var next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
         S.set("theme", next); apply();
+      });
+      document.getElementById("styleBtn").addEventListener("click", function () {
+        S.set("style", root.getAttribute("data-style") === "calm" ? "bold" : "calm"); apply();
       });
       document.getElementById("fontBtn").addEventListener("click", function () {
         S.set("font", S.get("font", false) !== true); apply();
