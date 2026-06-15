@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reading Ladder — one text, every level · ISH</title>
+  <meta name="description" content="A GDPR-safe text simplifier for EAL. A teacher's own text, re-levelled for every reader. No accounts, no uploads." />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&family=Atkinson+Hyperlegible:wght@400;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="topbar">
+    <div class="topbar__brand">
+      <img src="assets/ish-logo.png" alt="" class="topbar__logo" width="40" height="40" />
+      <div>
+        <p class="topbar__app">Reading Ladder</p>
+        <p class="topbar__sub">One text · every level — for EAL at ISH</p>
+      </div>
+    </div>
+    <div class="topbar__tools" role="group" aria-label="Reading and display options">
+      <a class="btn btn--ghost btn--sm" href="how-to.html">How it works</a>
+      <button class="btn btn--ghost btn--sm" id="fontBtn" type="button" aria-pressed="false" title="Dyslexia-friendly font">Aa font</button>
+      <button class="btn btn--ghost btn--sm" id="sizeBtn" type="button" aria-pressed="false" title="Bigger text">Bigger</button>
+      <button class="btn btn--ghost btn--sm" id="contrastBtn" type="button" aria-pressed="false" title="High contrast">Contrast</button>
+      <button class="btn btn--ghost btn--sm" id="themeBtn" type="button" title="Light / dark">🌙 Dark</button>
+    </div>
+  </header>
+
+  <main id="main" class="wrap">
+    <section class="hero">
+      <h1 class="hero__h">Turn one text into a ladder of reading levels.</h1>
+      <p class="hero__p">
+        Paste <strong>your own text</strong>. This tool has <strong>no AI inside it</strong> — instead it writes
+        the instructions, <em>you</em> run them once in the school's AI, and paste the answer back. Then it builds
+        a simpler version for every EAL level, each with key words, questions and sentence starters.
+      </p>
+      <ol class="loop" aria-label="The three-part loop">
+        <li class="loop__step"><span class="loop__ico" aria-hidden="true">📝</span><span><strong>1. This tool</strong> writes the AI instructions</span></li>
+        <li class="loop__arrow" aria-hidden="true">→</li>
+        <li class="loop__step"><span class="loop__ico" aria-hidden="true">🤖</span><span><strong>2. You</strong> paste them into the school's AI</span></li>
+        <li class="loop__arrow" aria-hidden="true">→</li>
+        <li class="loop__step"><span class="loop__ico" aria-hidden="true">📄</span><span><strong>3. Paste the answer back</strong> — worksheets appear</span></li>
+      </ol>
+      <p class="privacy" id="privacy">
+        🔒 <strong>No account, nothing uploaded.</strong> Your text stays in this browser until you choose to
+        paste it into ISH's approved AI. <a href="how-to.html#privacy">Why this is GDPR / AI-Act safe</a>.
+      </p>
+      <p class="hero__cta">
+        <button class="btn btn--link" id="demoBtn" type="button">See a worked example →</button>
+        <button class="btn btn--link" id="resetDemo" type="button" hidden>Clear example — start mine</button>
+      </p>
+    </section>
+
+    <!-- STEP 1 -->
+    <section class="step" aria-labelledby="s1">
+      <h2 class="step__h" id="s1"><span class="step__n">1</span> Your text</h2>
+      <div class="grid grid--3">
+        <label class="field">
+          <span class="field__label">Title</span>
+          <input id="title" type="text" class="input" placeholder="e.g. The water cycle" autocomplete="off" />
+        </label>
+        <label class="field">
+          <span class="field__label">Subject / topic</span>
+          <input id="topic" type="text" class="input" placeholder="e.g. Science — Year 8" autocomplete="off" />
+        </label>
+        <label class="field">
+          <span class="field__label">Class level <span class="field__hint">(where the original sits)</span></span>
+          <input id="year" type="text" class="input" placeholder="e.g. Year 8 / MYP 3" autocomplete="off" />
+        </label>
+      </div>
+      <label class="field">
+        <span class="field__label">Your text <span class="field__hint">— paste it here (or leave empty to generate from the topic)</span></span>
+        <textarea id="sourceText" class="input input--area" rows="9" placeholder="Paste the passage you want to differentiate…"></textarea>
+      </label>
+      <p class="counter"><span id="srcCount">0</span> words</p>
+    </section>
+
+    <!-- STEP 2 -->
+    <section class="step" aria-labelledby="s2">
+      <h2 class="step__h" id="s2"><span class="step__n">2</span> Choose the levels</h2>
+      <p class="step__lede">Tick the EAL phases you need. Rename any label to match how your team places students.</p>
+      <div id="levelList" class="levellist"></div>
+    </section>
+
+    <!-- STEP 3 -->
+    <section class="step" aria-labelledby="s3">
+      <h2 class="step__h" id="s3"><span class="step__n">3</span> What to include</h2>
+      <div class="toggles" role="group" aria-label="What to include per level">
+        <span class="toggle toggle--locked" aria-disabled="true" title="Always included">Simplified passage</span>
+        <button class="toggle" id="optSummary" type="button" aria-pressed="true">Short summary</button>
+        <button class="toggle" id="optGlossary" type="button" aria-pressed="true">Key-word glossary</button>
+        <button class="toggle" id="optQuestions" type="button" aria-pressed="true">Comprehension questions</button>
+        <button class="toggle" id="optStarters" type="button" aria-pressed="true">Sentence starters</button>
+      </div>
+      <details class="advanced">
+        <summary>More options</summary>
+        <div class="grid grid--3">
+          <label class="field"><span class="field__label">Words per glossary</span>
+            <input id="glossN" type="number" class="input input--num" min="3" max="12" value="6" /></label>
+          <label class="field"><span class="field__label">Questions per level</span>
+            <input id="qN" type="number" class="input input--num" min="2" max="8" value="4" /></label>
+          <label class="field"><span class="field__label">Sentence starters</span>
+            <input id="startN" type="number" class="input input--num" min="2" max="6" value="3" /></label>
+        </div>
+        <label class="field">
+          <span class="field__label">Home-language glossary <span class="field__hint">(optional — translate key words)</span></span>
+          <input id="homeLang" type="text" class="input" placeholder="e.g. Ukrainian, Arabic, Spanish…" autocomplete="off" />
+        </label>
+      </details>
+      <div class="step__cta">
+        <button class="btn btn--primary" id="buildBtn" type="button">Write the AI instructions →</button>
+        <p class="cta__hint">This writes the instructions for you to copy into your AI — no worksheets just yet.</p>
+      </div>
+    </section>
+
+    <!-- STEP 4 -->
+    <section class="step step--locked" id="step4" aria-labelledby="s4">
+      <h2 class="step__h" id="s4" tabindex="-1"><span class="step__n">4</span> Copy the instructions into your AI</h2>
+      <p class="locked-note" id="lock4">🔒 This opens once you finish step 3.</p>
+      <div class="step__body" id="body4" hidden>
+        <p class="step__lede">These instructions already include your text. Here is the whole hand-off, step by step:</p>
+        <ol class="microsteps">
+          <li>Press <strong>Copy instructions</strong> (below).</li>
+          <li>Open the school's AI, <strong>paste</strong> into the message box and send.
+            <span class="microsteps__ai">
+              <a class="btn btn--ghost btn--sm" href="https://gemini.google.com/" target="_blank" rel="noopener">Open Gemini ↗</a>
+              <span class="muted">— or ChatGPT / Claude. Opens in a new tab; your text stays safe here.</span>
+            </span>
+          </li>
+          <li>The AI answers with a <strong>long block that looks like computer code</strong>, full of
+            <code>{ }</code> brackets. <strong>That is exactly right</strong> — don't worry if it looks odd:
+            <span class="jsonpeek" aria-hidden="true">{ "schema": "ish-eal@1", "levels": [ { "phase": "Phase 1", "passage": "Water moves around the Earth…" } ] }</span>
+          </li>
+          <li><strong>Select all of it</strong> — click in the reply and press <kbd>Ctrl</kbd>/<kbd>Cmd</kbd>+<kbd>A</kbd>, then copy.</li>
+          <li>Come back and <strong>paste it into step 5</strong>.</li>
+        </ol>
+        <textarea id="promptOut" class="input input--area mono" rows="9" readonly aria-label="The AI instructions to copy"></textarea>
+        <div class="step__cta">
+          <button class="btn btn--primary" id="copyPrompt" type="button">Copy instructions</button>
+        </div>
+        <p class="privacy privacy--inline">🔒 Pasting into ISH's <strong>approved</strong> AI is fine — it's the tool staff are already cleared to use. This page sends nothing itself.</p>
+      </div>
+    </section>
+
+    <!-- STEP 5 -->
+    <section class="step step--locked" id="step5" aria-labelledby="s5">
+      <h2 class="step__h" id="s5" tabindex="-1"><span class="step__n">5</span> Paste the reply</h2>
+      <p class="locked-note" id="lock5">🔒 This opens once you finish step 3.</p>
+      <div class="step__body" id="body5" hidden>
+        <p class="step__lede">Paste everything the AI sent back — even if it added a line like "Sure, here you go". Stray text, code fences and smart quotes are cleaned up for you.</p>
+        <textarea id="replyIn" class="input input--area mono" rows="8" placeholder="Paste the AI's reply here…"></textarea>
+        <div class="step__cta">
+          <button class="btn btn--primary" id="renderBtn" type="button">Build the worksheets →</button>
+        </div>
+        <div id="notes" class="notes" role="status" aria-live="polite"></div>
+        <div id="alert" class="notes" role="alert"></div>
+      </div>
+    </section>
+
+    <!-- RESULTS -->
+    <section class="step" id="results" aria-labelledby="s6" hidden>
+      <div class="results__head">
+        <h2 class="step__h" id="s6" tabindex="-1"><span class="step__n">✓</span> Your reading ladder</h2>
+        <div class="results__tools" role="group" aria-label="Worksheet options">
+          <button class="btn btn--ghost btn--sm" id="answersBtn" type="button" aria-pressed="true">Hide answer keys</button>
+          <button class="btn btn--ghost btn--sm" id="compareBtn" type="button" aria-pressed="false">Compare side by side</button>
+          <button class="btn btn--ghost btn--sm" id="copyAllBtn" type="button">Copy all</button>
+          <button class="btn btn--primary btn--sm" id="printBtn" type="button">Print / Save PDF</button>
+        </div>
+      </div>
+      <p class="results__title" id="resultsTitle"></p>
+      <div id="worksheets"></div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <p>Built for the ISH English &amp; EAL department · no accounts, no uploads, no cost. ·
+      <a href="how-to.html">How it works</a></p>
+  </footer>
+
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+  <script src="config.js"></script>
+  <script src="levels.js"></script>
+  <script src="store.js"></script>
+  <script src="prompt.js"></script>
+  <script src="schema.js"></script>
+  <script src="render.js"></script>
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>How Reading Ladder works · ISH</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&family=Atkinson+Hyperlegible:wght@400;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .guide { max-width: 760px; }
+    .guide h2 { margin-top: 38px; font-size: 1.5rem; }
+    .guide h3 { margin-top: 24px; font-size: 1.12rem; }
+    .guide li { max-width: var(--measure); margin-bottom: 8px; }
+    .stepcard { display: grid; grid-template-columns: auto 1fr; gap: 16px; align-items: start; padding: 16px; border: 1.5px solid var(--line); border-radius: var(--radius-sm); background: var(--surface); margin-bottom: 12px; }
+    .stepcard p { margin: 4px 0 0; color: var(--ink-soft); }
+    .stepcard h3 { margin: 0; }
+    .callout { background: var(--accent-soft); border: 1.5px solid color-mix(in srgb, var(--accent) 40%, var(--line)); border-radius: var(--radius-sm); padding: 16px 18px; margin: 18px 0; }
+    .callout--warm { background: var(--warm-soft); border-color: color-mix(in srgb, var(--warm) 40%, var(--line)); }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="topbar">
+    <div class="topbar__brand">
+      <img src="assets/ish-logo.png" alt="" class="topbar__logo" width="40" height="40" />
+      <div>
+        <p class="topbar__app">Reading Ladder</p>
+        <p class="topbar__sub">How it works</p>
+      </div>
+    </div>
+    <div class="topbar__tools">
+      <a class="btn btn--primary btn--sm" href="index.html">← Back to the tool</a>
+      <button class="btn btn--ghost btn--sm" id="fontBtn" type="button" aria-pressed="false">Aa font</button>
+      <button class="btn btn--ghost btn--sm" id="themeBtn" type="button">🌙 Dark</button>
+    </div>
+  </header>
+
+  <main id="main" class="wrap guide">
+    <h1 class="hero__h" style="font-size: clamp(1.6rem, 4vw, 2.3rem);">One text, every level — in five steps.</h1>
+    <p class="hero__p">
+      Reading Ladder takes <strong>a text you already have</strong> and turns it into a simplified version
+      for each EAL phase in your class — each with key words, comprehension questions and sentence starters.
+      It does not use any AI of its own: it writes a careful prompt, <em>you</em> run it through ISH's approved
+      AI, and the tool turns the reply into ready-to-print worksheets.
+    </p>
+
+    <h2>The five steps</h2>
+
+    <div class="stepcard"><span class="step__n">1</span><div>
+      <h3>Paste your text</h3>
+      <p>Give it a title and subject, then paste the passage you want to differentiate. Tip: use your own
+      writing or a public-domain text — that way nobody's copyright is involved. Leave the box empty to have
+      the AI write a fresh text on the topic instead.</p>
+    </div></div>
+
+    <div class="stepcard"><span class="step__n">2</span><div>
+      <h3>Choose the levels</h3>
+      <p>Tick the EAL phases you need (two or three is usually plenty). Each shows its CEFR equivalent, and you
+      can <strong>rename any label</strong> to match how your team places students. Add the "Original" level for
+      your strongest readers or for comparison.</p>
+    </div></div>
+
+    <div class="stepcard"><span class="step__n">3</span><div>
+      <h3>Pick what to include</h3>
+      <p>The simplified passage is always included. Add a <strong>short summary</strong>, a key-word glossary,
+      comprehension questions and sentence starters with one tap each. "More options" lets you set how many of
+      each, and add a <strong>home-language glossary</strong> (e.g. Ukrainian, Arabic) if that helps your students.
+      Then press <strong>Write the AI instructions</strong>.</p>
+    </div></div>
+
+    <div class="stepcard"><span class="step__n">4</span><div>
+      <h3>Copy the instructions into your AI</h3>
+      <p>The tool writes one set of instructions that already contains your text. Press <strong>Copy
+      instructions</strong>, open ISH's approved AI (Gemini, ChatGPT or Claude), paste and send. The AI answers
+      with a <strong>long block that looks like computer code, full of { } brackets — that is exactly right</strong>,
+      don't worry. Select all of it (Ctrl/Cmd&nbsp;+&nbsp;A) and copy.</p>
+    </div></div>
+
+    <div class="stepcard"><span class="step__n">5</span><div>
+      <h3>Paste the reply back</h3>
+      <p>Paste the whole reply into step 5 — even if the AI added a sentence like "Sure, here you go" — and press
+      <strong>Build the worksheets</strong>. Stray text, code fences and "smart quotes" are cleaned up
+      automatically. Your reading ladder appears, ready to read, copy, print or save as a PDF.</p>
+    </div></div>
+
+    <h2>Getting the best results</h2>
+    <ul>
+      <li><strong>Keep texts a sensible length.</strong> A few paragraphs work better than a whole chapter.</li>
+      <li><strong>Two or three levels</strong> usually covers a class. You can always run it again for more.</li>
+      <li><strong>Read the lowest level first.</strong> If a sentence is still too hard, ask the AI in the same
+        chat to "make Phase 1 even simpler" and paste the new reply back.</li>
+      <li><strong>Printing student copies?</strong> In the results, click <em>Hide answer keys</em> first — then
+        Print / Save PDF gives clean worksheets without the answers. Each level prints on its own page.</li>
+      <li><strong>Into Google Docs or Classroom?</strong> Use <em>Copy all</em> (or Copy on one level) to paste
+        plain text you can format however you like.</li>
+    </ul>
+
+    <h2 id="privacy">Why this is GDPR &amp; EU AI-Act safe</h2>
+    <div class="callout">
+      <p style="margin:0 0 8px;"><strong>🔒 The student text never leaves your browser through this tool.</strong></p>
+      <ul style="margin:0;">
+        <li>There is <strong>no account, no server and no database</strong>. Reading Ladder is a few static files.</li>
+        <li>The tool itself <strong>uploads nothing</strong>. It only builds text on your screen.</li>
+        <li><strong>You</strong> decide when to copy the prompt into ISH's own approved AI — the same tool staff are
+          already cleared to use. There is no extra third-party processor to assess.</li>
+        <li>Because you paste <strong>your own or public-domain text</strong>, you are not sending someone else's
+          copyrighted work to a service either.</li>
+      </ul>
+    </div>
+    <p>
+      This is the difference from a product like Diffit, where the text is sent to the vendor's own servers for
+      processing — which is what makes that route hard to clear under GDPR and the EU AI Act. Always follow ISH's
+      data-protection policy and only paste student-appropriate material into approved tools. If in doubt, check
+      with the school's data-protection lead.
+    </p>
+
+    <h2>Common questions</h2>
+    <h3>Does it cost anything?</h3>
+    <p>No. It is free static hosting and uses the AI your school already provides.</p>
+    <h3>Is my text saved anywhere?</h3>
+    <p>Only in your own browser, so you don't lose it on refresh. Clearing your browser data removes it.</p>
+    <h3>The reply wouldn't build — what now?</h3>
+    <p>Make sure you copied the <em>whole</em> reply. If the AI added an apology or notes, that's fine — the tool
+    strips them. If it still fails, ask the AI to "reply with only the JSON object, nothing else" and try again.</p>
+
+    <p style="margin-top:34px;"><a class="btn btn--primary" href="index.html">← Back to Reading Ladder</a></p>
+  </main>
+
+  <footer class="foot">
+    <p>Built for the ISH English &amp; EAL department · no accounts, no uploads, no cost.</p>
+  </footer>
+
+  <script src="store.js"></script>
+  <script>
+    (function () {
+      var root = document.documentElement;
+      var S = window.EALStore;
+      function apply() {
+        var theme = S.get("theme", "light");
+        root.setAttribute("data-theme", theme);
+        document.getElementById("themeBtn").textContent = theme === "dark" ? "☀ Light" : "🌙 Dark";
+        if (S.get("font", false)) root.setAttribute("data-font", "dyslexic"); else root.removeAttribute("data-font");
+        if (S.get("size", false)) root.setAttribute("data-size", "big");
+        if (S.get("contrast", false)) root.setAttribute("data-contrast", "high");
+        document.getElementById("fontBtn").setAttribute("aria-pressed", S.get("font", false) ? "true" : "false");
+      }
+      document.getElementById("themeBtn").addEventListener("click", function () {
+        var next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
+        S.set("theme", next); apply();
+      });
+      document.getElementById("fontBtn").addEventListener("click", function () {
+        S.set("font", S.get("font", false) !== true); apply();
+      });
+      apply();
+    })();
+  </script>
+</body>
+</html>
