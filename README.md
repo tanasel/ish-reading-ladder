@@ -79,6 +79,13 @@ require a server. See [`how-to.html#privacy`](how-to.html).
 Results can be **printed / saved as PDF** (each level on its own page; hide answer keys first for clean student
 copies), **copied as plain text** for Google Docs / Classroom, or viewed **side-by-side** for comparison.
 
+**Sharing a level** — each level card has three buttons: **✉ Email** opens the teacher's *own* mail client with a
+pre-filled draft (subject + worksheet, **answer key stripped**); nothing is sent until the teacher presses send,
+and over the ~2000-char `mailto` ceiling it falls back to copy-to-clipboard (Windows silently no-ops otherwise).
+**ManageBac** copies the task as clean plain text (no answers) to paste into a task/message — there is no
+auto-post (that would need a server + login, which the design avoids); the **Print / Save PDF** also attaches to a
+ManageBac task. **Copy** gives the teacher the full worksheet *including* answers.
+
 A built-in visual guide lives at **`how-to.html`** (linked from the header), including the privacy rationale.
 
 ## Accessibility

@@ -32,9 +32,26 @@
     head.appendChild(titles);
 
     const tools = el("div", "level__tools");
+    const packMeta = (opts && opts.meta) || {};
+
+    const emailBtn = el("button", "btn btn--ghost btn--sm", "✉ Email");
+    emailBtn.type = "button";
+    emailBtn.title = "Open a pre-filled email to a student (no answer key). Nothing is sent until you press Send.";
+    emailBtn.setAttribute("aria-label", "Open a pre-filled student email for " + level.phase + ", without the answer key");
+    emailBtn.addEventListener("click", () => emailLevel(level, packMeta, emailBtn));
+    tools.appendChild(emailBtn);
+
+    const mbBtn = el("button", "btn btn--ghost btn--sm", "ManageBac");
+    mbBtn.type = "button";
+    mbBtn.title = "Copy the task as clean plain text to paste into ManageBac (no answer key).";
+    mbBtn.setAttribute("aria-label", "Copy " + level.phase + " for ManageBac, without the answer key");
+    mbBtn.addEventListener("click", () => copyText(levelToPlainText(level, { includeAnswers: false }), mbBtn));
+    tools.appendChild(mbBtn);
+
     const copyBtn = el("button", "btn btn--ghost btn--sm", "Copy");
     copyBtn.type = "button";
-    copyBtn.setAttribute("aria-label", "Copy the " + level.phase + " worksheet as text");
+    copyBtn.title = "Copy the full worksheet, including the answer key (for you).";
+    copyBtn.setAttribute("aria-label", "Copy the full " + level.phase + " worksheet including answers");
     copyBtn.addEventListener("click", () => copyLevel(level, copyBtn));
     tools.appendChild(copyBtn);
     head.appendChild(tools);
@@ -118,7 +135,8 @@
     return card;
   }
 
-  function levelToPlainText(level) {
+  function levelToPlainText(level, opts) {
+    const answers = !opts || opts.includeAnswers !== false; // default: include (teacher copy)
     const out = [];
     out.push(level.phase + (level.cefr ? "  (CEFR " + level.cefr + ")" : "") + "  — " + level.wordCount + " words");
     out.push("");
@@ -135,7 +153,7 @@
       out.push("");
       out.push("COMPREHENSION");
       level.questions.forEach((q, i) => {
-        out.push((i + 1) + ". " + q.q + (q.answer ? "   [Answer: " + q.answer + "]" : ""));
+        out.push((i + 1) + ". " + q.q + (answers && q.answer ? "   [Answer: " + q.answer + "]" : ""));
       });
     }
     if (level.starters && level.starters.length) {
@@ -149,7 +167,7 @@
   function packToPlainText(pack) {
     const head = pack.meta.title + (pack.meta.topic ? "  —  " + pack.meta.topic : "");
     return head + "\n" + "=".repeat(Math.min(head.length, 60)) + "\n\n" +
-      pack.levels.map(levelToPlainText).join("\n\n" + "—".repeat(40) + "\n\n");
+      pack.levels.map(function (l) { return levelToPlainText(l); }).join("\n\n" + "—".repeat(40) + "\n\n");
   }
 
   function copyText(text, btn) {
@@ -167,10 +185,35 @@
   }
   function copyLevel(level, btn) { copyText(levelToPlainText(level), btn); }
 
+  // Student-facing text: passage + summary + glossary + questions + starters,
+  // with NO answer key, plus a short friendly opener for the email.
+  function studentEmailBody(level) {
+    const opener = "Hi,\n\nHere is your reading for " + (level.phase || "this level") +
+      ". Read it, try the questions, and use the sentence starters to help you write full answers.\n\n";
+    return opener + levelToPlainText(level, { includeAnswers: false });
+  }
+
+  // Open the teacher's OWN mail client with a pre-filled draft. mailto never
+  // auto-sends (RFC 6068) and nothing is uploaded. Over ~2000 chars it silently
+  // does nothing on Windows, so fall back to copy for long worksheets.
+  function emailLevel(level, meta, btn) {
+    const title = (meta && meta.title) ? meta.title : "Reading";
+    const subject = "Reading: " + title + " — " + (level.phase || "");
+    const body = studentEmailBody(level);
+    const href = "mailto:?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body.replace(/\n/g, "\r\n"));
+    if (href.length > 1900) {
+      copyText(body, btn);
+      S.toast("This level is long, so it may not open as an email on every device — I've copied it. Paste it into a new email to your student.");
+      return;
+    }
+    window.location.href = href; // opens the pre-filled compose window; teacher reviews + sends
+    if (btn) { const old = btn.textContent; btn.textContent = "Opening…"; setTimeout(() => { btn.textContent = old; }, 1600); }
+  }
+
   function render(pack, mount) {
     mount.textContent = "";
     const wrap = el("div", "levels");
-    pack.levels.forEach((lv, i) => wrap.appendChild(levelCard(lv, i, {})));
+    pack.levels.forEach((lv, i) => wrap.appendChild(levelCard(lv, i, { meta: pack.meta })));
     mount.appendChild(wrap);
     return wrap;
   }

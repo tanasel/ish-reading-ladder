@@ -173,6 +173,16 @@ test("schema: a trailing comma is fixed without mangling curly quotes inside a s
   assert.ok(res.pack.levels[0].passage.indexOf("“hello”") >= 0, "in-string curly quotes must be preserved");
 });
 
+test("render: levelToPlainText omits the answer key for student-facing exports", () => {
+  const res = Schema.validatePackText(JSON.stringify(Sample.pack));
+  const lvl = res.pack.levels[0];
+  const teacher = Render.levelToPlainText(lvl);
+  const student = Render.levelToPlainText(lvl, { includeAnswers: false });
+  assert.ok(teacher.includes("[Answer:"), "teacher copy should include the answer key");
+  assert.ok(!student.includes("[Answer:"), "student/ManageBac copy must NOT include answers");
+  assert.ok(student.includes("COMPREHENSION"), "student copy still keeps the questions themselves");
+});
+
 test("prompt: JSON-escapes special characters in the schema example", () => {
   const p = Prompt.buildPrompt({ title: 'The "Best" Topic', topic: "A\\B", levels: threeLevels, outputs: {} });
   assert.ok(p.includes(JSON.stringify('The "Best" Topic')), "title should be JSON-escaped in the example");

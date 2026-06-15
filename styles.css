@@ -311,10 +311,10 @@ kbd { font-family: var(--font-mono); font-size: 0.8em; background: var(--paper);
   border: var(--bd); border-radius: var(--radius); background: var(--paper);
   padding: clamp(16px, 2.4vw, 26px); box-shadow: var(--sh); break-inside: avoid;
 }
-.level__head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; padding-bottom: 14px; margin-bottom: 16px; border-bottom: var(--bd2); }
+.level__head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding-bottom: 14px; margin-bottom: 16px; border-bottom: var(--bd2); }
 .level__phase { margin: 0 0 8px; font-size: 1.4rem; font-weight: 700; }
 .level__meta { display: flex; gap: 8px; flex-wrap: wrap; margin: 0; }
-.level__tools { flex: none; }
+.level__tools { display: flex; gap: 8px; flex-wrap: wrap; }
 
 /* the summary callout — short, so a tint is fine */
 .level__summary {
