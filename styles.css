@@ -136,7 +136,7 @@ h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.12; letter-spa
   border-bottom: var(--bd);
 }
 .topbar__brand { display: flex; align-items: center; gap: 12px; }
-.topbar__logo { border: var(--bd2); border-radius: 8px; box-shadow: var(--sh-xs); background: var(--paper); }
+.topbar__logo { height: 34px; width: auto; display: block; }
 .topbar__app { margin: 0; font-family: var(--font-display); font-weight: 700; font-size: 1.2rem; }
 .topbar__sub { margin: 0; font-size: 0.78rem; color: var(--ink-mute); font-weight: 600; }
 .topbar__tools { display: flex; gap: 8px; flex-wrap: wrap; }
