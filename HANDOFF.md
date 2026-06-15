@@ -4,7 +4,7 @@
 **Live site:** https://tanasel.github.io/ish-reading-ladder/ · **Repository:** https://github.com/tanasel/ish-reading-ladder (public)
 
 Reading Ladder is a **GDPR-safe text simplifier for EAL** — a free alternative to Diffit. A teacher pastes their
-own text; the tool writes a prompt; the teacher runs it through ISH's approved AI and pastes the reply back; the
+own text; the tool writes a prompt; the teacher runs it through ISH's Gemini (Google Workspace) and pastes the reply back; the
 tool turns it into a ladder of reading levels (passage + glossary + questions + sentence starters) for every EAL
 phase. No accounts, no uploads, no cost.
 
@@ -14,7 +14,7 @@ phase. No accounts, no uploads, no cost.
 
 1. Open the tool and click **See a worked example** to watch the whole loop with sample text filled in.
 2. Then: paste your own text → tick the levels → press **Write the AI instructions** → copy them into
-   Gemini/ChatGPT/Claude → paste the reply back → press **Build the worksheets**.
+   **Gemini** (signed in with your ISH Google account) → paste the reply back → press **Build the worksheets**.
 3. The **How it works** button (top of the page) has a full visual guide and explains why this is GDPR-safe.
 
 **The point for the department:** this does the one job the EAL team wanted from Diffit (simplifying texts to

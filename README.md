@@ -6,9 +6,10 @@ a GDPR-safe alternative to Diffit for **simplifying texts into multiple reading 
 ## What it is
 
 A teacher pastes **their own text**. Reading Ladder writes a careful AI prompt, the teacher pastes that prompt
-into the school's **approved AI** (Gemini, ChatGPT or Claude), and pastes the reply back. The app validates the
-reply and turns it into a **ladder of reading levels** — the same text re-written at each chosen EAL phase, each
-with a key-word glossary, comprehension questions and sentence starters, ready to read, copy or print.
+into the school's AI — at ISH that's **Gemini in Google Workspace** (sign in with the ISH account) — and pastes
+the reply back. The app validates the reply and turns it into a **ladder of reading levels** — the same text
+re-written at each chosen EAL phase, each with a summary, key-word glossary, comprehension questions and sentence
+starters, ready to read, copy or print.
 
 There is **no API key, no server, no account, and no cost**. The whole app is plain HTML, CSS and vanilla
 JavaScript that runs from static files and deploys to GitHub Pages.
@@ -16,10 +17,13 @@ JavaScript that runs from static files and deploys to GitHub Pages.
 ## Why it exists (and why no built-in AI)
 
 The EAL team wanted Diffit purely to *simplify texts*, but sending student-facing text to a third-party vendor's
-servers is hard to clear under **GDPR and the EU AI Act**. Reading Ladder side-steps that:
+servers is hard to clear under **GDPR and the EU AI Act**. (MagicSchool, which ISH also has, doesn't reliably
+re-level one text into several matched EAL phases — so it doesn't cover this need.) Reading Ladder side-steps the
+compliance problem:
 
 - The tool **uploads nothing** — it only builds text in the browser.
-- The teacher decides when to copy the prompt into **ISH's own approved AI** — no new third-party processor.
+- The teacher runs the AI step in **Gemini signed into their ISH Google account**, so the text stays inside the
+  school's existing **Google Workspace** agreement — no new third-party processor to assess.
 - The teacher pastes **their own or public-domain text**, so no one else's copyright is sent anywhere.
 
 This is the same copy-paste "AI bridge" pattern as the department's *Quest Forge* tool.
