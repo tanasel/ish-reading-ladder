@@ -37,7 +37,7 @@
             { word: "river", definition: "A long line of water on the land.", example: "The river goes to the sea.", translation: "" }
           ],
           questions: [
-            { q: "What heats the sea?", type: "literal", answer: "The Sun." },
+            { q: "What heats the sea?", type: "literal", options: ["The Moon.", "The Sun.", "The wind.", "The rain."], answer: "The Sun." },
             { q: "Where does the water go after the sea?", type: "literal", answer: "Up to the sky." },
             { q: "What falls from the clouds?", type: "literal", answer: "Rain." }
           ],
@@ -63,7 +63,7 @@
             { word: "carry", definition: "To take something from one place to another.", example: "Rivers carry water to the sea.", translation: "" }
           ],
           questions: [
-            { q: "What do we call the way water moves around the Earth?", type: "literal", answer: "The water cycle." },
+            { q: "What do we call the way water moves around the Earth?", type: "literal", options: ["The food chain.", "The water cycle.", "The weather.", "The seasons."], answer: "The water cycle." },
             { q: "Why does the gas turn back into drops high in the sky?", type: "inferential", answer: "Because the air up high is cold." },
             { q: "What carries the water back to the sea?", type: "literal", answer: "Rivers." }
           ],
@@ -91,7 +91,7 @@
             { word: "feeds", definition: "Gives food or water to something so it can live.", example: "The rain feeds the plants.", translation: "" }
           ],
           questions: [
-            { q: "Name the step where water changes from a liquid into a gas.", type: "literal", answer: "Evaporation." },
+            { q: "Name the step where water changes from a liquid into a gas.", type: "literal", options: ["Condensation.", "Precipitation.", "Evaporation.", "Collection."], answer: "Evaporation." },
             { q: "Why do the drops of water fall from the clouds?", type: "inferential", answer: "Because they become too heavy to stay in the air." },
             { q: "Why is the water cycle important for plants and people?", type: "evaluative", answer: "It keeps giving fresh water for plants to grow and for people to drink, because the same water is used again and again." }
           ],

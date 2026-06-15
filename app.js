@@ -148,9 +148,11 @@
   // Step 3 — output toggles
   // ---------------------------------------------------------------
   function wireOutputToggles() {
-    ["optSummary", "optGlossary", "optQuestions", "optStarters"].forEach((id) => {
+    // [id, default-on]
+    [["optSummary", true], ["optGlossary", true], ["optQuestions", true], ["optMCQ", false], ["optStarters", true], ["optFullTranslation", false]].forEach(([id, dflt]) => {
       const b = $("#" + id);
-      const saved = store.get(id, true);
+      if (!b) return;
+      const saved = store.get(id, dflt);
       b.setAttribute("aria-pressed", saved ? "true" : "false");
       b.addEventListener("click", () => {
         const on = b.getAttribute("aria-pressed") !== "true";
@@ -164,7 +166,7 @@
   // ---------------------------------------------------------------
   // Draft persistence (don't lose the teacher's text)
   // ---------------------------------------------------------------
-  const DRAFT_FIELDS = ["title", "topic", "year", "sourceText", "homeLang", "glossN", "qN", "startN"];
+  const DRAFT_FIELDS = ["title", "topic", "year", "sourceText", "homeLang", "glossN", "qN", "startN", "lengthSel"];
   function restoreDraft() {
     const d = store.get("draft", {}) || {};
     DRAFT_FIELDS.forEach((id) => { if (d[id] != null && $("#" + id)) $("#" + id).value = d[id]; });
@@ -195,6 +197,9 @@
       homeLanguage: $("#homeLang").value,
       levels,
       outputs: { summary: pressed("optSummary"), glossary: pressed("optGlossary"), questions: pressed("optQuestions"), starters: pressed("optStarters") },
+      mcq: pressed("optMCQ"),
+      fullTranslation: pressed("optFullTranslation"),
+      length: $("#lengthSel").value,
       glossaryCount: $("#glossN").value,
       questionCount: $("#qN").value,
       starterCount: $("#startN").value,

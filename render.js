@@ -71,6 +71,17 @@
     if (!body.childNodes.length) body.appendChild(el("p", "muted", "(no passage)"));
     card.appendChild(body);
 
+    // Optional full home-language version (collapsed; English stays primary). dir=auto handles RTL.
+    if (level.translation) {
+      const det = el("details", "translation");
+      det.appendChild(el("summary", "translation__sum", "Home-language version"));
+      const tdiv = el("div", "translation__body");
+      tdiv.setAttribute("dir", "auto");
+      paragraphs(level.translation).forEach((p) => tdiv.appendChild(el("p", null, p)));
+      det.appendChild(tdiv);
+      card.appendChild(det);
+    }
+
     // Glossary
     if (level.glossary && level.glossary.length) {
       const sec = el("section", "level__sec");
@@ -105,6 +116,19 @@
         row.appendChild(el("span", "question__q", q.q));
         row.appendChild(el("span", "qtype qtype--" + q.type, TYPE_LABEL[q.type] || q.type));
         li.appendChild(row);
+        if (q.options && q.options.length) {
+          const ul = el("ul", "options");
+          q.options.forEach((opt, oi) => {
+            const oli = el("li", "option");
+            oli.appendChild(el("span", "option__ltr", String.fromCharCode(65 + oi) + ")"));
+            oli.appendChild(document.createTextNode(" " + opt));
+            if (q.answer && opt.trim().toLowerCase() === q.answer.trim().toLowerCase()) {
+              oli.appendChild(el("span", "option__correct answer-key", " ✓")); // marker hides with answer keys
+            }
+            ul.appendChild(oli);
+          });
+          li.appendChild(ul);
+        }
         if (q.answer) {
           const ans = el("p", "question__a answer-key");
           ans.appendChild(el("strong", null, "Answer: "));
@@ -142,6 +166,7 @@
     out.push("");
     if (level.summary) { out.push("IN SHORT: " + level.summary); out.push(""); }
     out.push(level.passage || "");
+    if (level.translation) { out.push(""); out.push("HOME-LANGUAGE VERSION:"); out.push(level.translation); }
     if (level.glossary && level.glossary.length) {
       out.push("");
       out.push("KEY WORDS");
@@ -153,7 +178,11 @@
       out.push("");
       out.push("COMPREHENSION");
       level.questions.forEach((q, i) => {
-        out.push((i + 1) + ". " + q.q + (answers && q.answer ? "   [Answer: " + q.answer + "]" : ""));
+        out.push((i + 1) + ". " + q.q);
+        if (q.options && q.options.length) {
+          q.options.forEach((opt, oi) => out.push("   " + String.fromCharCode(65 + oi) + ") " + opt));
+        }
+        if (answers && q.answer) out.push("   [Answer: " + q.answer + "]");
       });
     }
     if (level.starters && level.starters.length) {

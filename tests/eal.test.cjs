@@ -183,6 +183,33 @@ test("render: levelToPlainText omits the answer key for student-facing exports",
   assert.ok(student.includes("COMPREHENSION"), "student copy still keeps the questions themselves");
 });
 
+test("prompt: multiple-choice, length and full-translation flags shape the prompt", () => {
+  const base = { levels: threeLevels, outputs: {} };
+  const mcq = Prompt.buildPrompt(Object.assign({}, base, { mcq: true }));
+  assert.ok(/MULTIPLE CHOICE/.test(mcq), "MCQ rule missing");
+  assert.ok(mcq.includes('"options"'), "options field missing in MCQ mode");
+  const len = Prompt.buildPrompt(Object.assign({}, base, { length: "short" }));
+  assert.ok(/Length: aim EVERY passage at a SHORT/.test(len), "length rule missing");
+  const tr = Prompt.buildPrompt(Object.assign({}, base, { homeLanguage: "Arabic", fullTranslation: true }));
+  assert.ok(tr.includes('"translation"') && tr.includes("Arabic"), "translation field missing");
+  const noHome = Prompt.buildPrompt(Object.assign({}, base, { fullTranslation: true })); // no home language
+  assert.ok(!noHome.includes('"translation"'), "full translation must require a home language");
+});
+
+test("schema + render: MCQ options and a passage translation survive normalize + export", () => {
+  const pk = { schema: "ish-eal@1", meta: { title: "T" }, levels: [{ phase: "P1", passage: "Some text.", translation: "Texto en español.", questions: [{ q: "Q?", type: "literal", options: ["A one", "B two"], answer: "B two" }] }] };
+  const res = Schema.validatePackText(JSON.stringify(pk));
+  const lvl = res.pack.levels[0];
+  assert.deepEqual(lvl.questions[0].options, ["A one", "B two"]);
+  assert.equal(lvl.translation, "Texto en español.");
+  const txt = Render.levelToPlainText(lvl);
+  assert.ok(txt.includes("A) A one") && txt.includes("B) B two"), "MCQ options missing from export");
+  assert.ok(txt.includes("HOME-LANGUAGE VERSION:"), "translation missing from export");
+  const student = Render.levelToPlainText(lvl, { includeAnswers: false });
+  assert.ok(student.includes("A) A one"), "student export should keep the options");
+  assert.ok(!student.includes("[Answer:"), "student export must not include the answer");
+});
+
 test("prompt: JSON-escapes special characters in the schema example", () => {
   const p = Prompt.buildPrompt({ title: 'The "Best" Topic', topic: "A\\B", levels: threeLevels, outputs: {} });
   assert.ok(p.includes(JSON.stringify('The "Best" Topic')), "title should be JSON-escaped in the example");

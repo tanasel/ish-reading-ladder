@@ -96,6 +96,7 @@
         <button class="toggle" id="optSummary" type="button" aria-pressed="true">Short summary</button>
         <button class="toggle" id="optGlossary" type="button" aria-pressed="true">Key-word glossary</button>
         <button class="toggle" id="optQuestions" type="button" aria-pressed="true">Comprehension questions</button>
+        <button class="toggle" id="optMCQ" type="button" aria-pressed="false" title="Make the questions multiple-choice (A–D)">Multiple choice</button>
         <button class="toggle" id="optStarters" type="button" aria-pressed="true">Sentence starters</button>
       </div>
       <details class="advanced">
@@ -107,11 +108,21 @@
             <input id="qN" type="number" class="input input--num" min="2" max="8" value="4" /></label>
           <label class="field"><span class="field__label">Sentence starters</span>
             <input id="startN" type="number" class="input input--num" min="2" max="6" value="3" /></label>
+          <label class="field"><span class="field__label">Reading length <span class="field__hint">(all levels)</span></span>
+            <select id="lengthSel" class="input">
+              <option value="auto">Auto (by level)</option>
+              <option value="short">Short</option>
+              <option value="medium">Medium</option>
+              <option value="long">Long</option>
+            </select></label>
         </div>
         <label class="field">
-          <span class="field__label">Home-language glossary <span class="field__hint">(optional — translate key words)</span></span>
+          <span class="field__label">Home language <span class="field__hint">(optional — translate the key words)</span></span>
           <input id="homeLang" type="text" class="input" placeholder="e.g. Ukrainian, Arabic, Spanish…" autocomplete="off" />
         </label>
+        <div class="toggles">
+          <button class="toggle" id="optFullTranslation" type="button" aria-pressed="false" title="Also translate the whole passage into the home language above">Also translate the whole passage</button>
+        </div>
       </details>
       <div class="step__cta">
         <button class="btn btn--primary" id="buildBtn" type="button">Write the AI instructions →</button>

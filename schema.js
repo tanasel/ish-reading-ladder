@@ -151,6 +151,7 @@
       audience: clamp(src.audience, 80),
       summary: clamp(src.summary, 600),
       passage,
+      translation: clamp(src.translation, 9000), // optional full home-language version of the passage
       wordCount: wordCount(passage), // always authoritative — never trust the AI's number
       glossary: [],
       questions: [],
@@ -176,7 +177,8 @@
       const text = clamp(q.q || q.question, 500);
       if (!text) return;
       const type = QTYPES.has(toText(q.type).toLowerCase()) ? toText(q.type).toLowerCase() : "literal";
-      lvl.questions.push({ q: text, type, answer: clamp(q.answer, 600) });
+      const options = listFrom(q.options, 6); // multiple-choice options (empty = open question)
+      lvl.questions.push({ q: text, type, options, answer: clamp(q.answer, 600) });
     });
 
     if (!passage) { lvl.__unusable = true; lvl.__reason = "no passage text"; }

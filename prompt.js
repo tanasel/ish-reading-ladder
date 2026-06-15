@@ -38,6 +38,9 @@
     const wantGloss = out.glossary !== false;
     const wantQ = out.questions !== false;
     const wantStart = out.starters !== false;
+    const wantMCQ = !!inputs.mcq;
+    const lengthMode = ["short", "medium", "long"].includes(inputs.length) ? inputs.length : "auto";
+    const LENGTH_WORDS = { short: "about 60-90", medium: "about 120-170", long: "about 200-260" };
 
     const glossN = clampInt(inputs.glossaryCount, 3, 12, 6);
     const qN = clampInt(inputs.questionCount, 2, 8, 4);
@@ -47,6 +50,7 @@
     const topic = txt(inputs.topic, "[subject / topic]");
     const year = txt(inputs.year, "the class's year group");
     const home = txt(inputs.homeLanguage, "");
+    const fullTranslation = !!inputs.fullTranslation && !!home;
     const source = txt(inputs.sourceText, "");
     const hasSource = source.length > 0;
 
@@ -54,6 +58,7 @@
     const fields = [];
     if (wantSummary) fields.push('"summary":"<2-3 short sentences giving the main idea, written AT this level>"');
     fields.push('"passage":"<the text at this level, paragraphs separated by a blank line>"', '"wordCount":<integer>');
+    if (fullTranslation) fields.push('"translation":"<the WHOLE passage above, translated naturally into ' + home + '>"');
     if (wantGloss) {
       fields.push(
         '"glossary":[{ "word":"", "definition":"<simple, at this level>", "example":"<a new sentence using the word>"' +
@@ -61,15 +66,20 @@
           " }]"
       );
     }
-    if (wantQ) fields.push('"questions":[{ "q":"", "type":"literal|inferential|evaluative", "answer":"<a model answer for the teacher>" }]');
+    if (wantQ) fields.push(
+      wantMCQ
+        ? '"questions":[{ "q":"", "type":"literal|inferential|evaluative", "options":["","","",""], "answer":"<the EXACT text of the correct option>" }]'
+        : '"questions":[{ "q":"", "type":"literal|inferential|evaluative", "answer":"<a model answer for the teacher>" }]'
+    );
     if (wantStart) fields.push('"starters":["<sentence stem a student can finish>"]');
 
     const partsList = [
       "a simplified passage" + (hasSource ? "" : " (written from scratch on the topic)"),
     ];
     if (wantSummary) partsList.push("a 2-3 sentence summary");
+    if (fullTranslation) partsList.push("a full " + home + " translation of the passage");
     if (wantGloss) partsList.push("a " + glossN + "-word glossary");
-    if (wantQ) partsList.push(qN + " comprehension questions");
+    if (wantQ) partsList.push(qN + (wantMCQ ? " multiple-choice questions" : " comprehension questions"));
     if (wantStart) partsList.push(startN + " sentence starters");
 
     const sourceSection = hasSource
@@ -109,9 +119,11 @@
       "3. Produce exactly " + levels.length + " entries in \"levels\", in the order listed.\n" +
       (wantSummary ? "- Summary: 2-3 short sentences per level, written AT that level, giving the real gist (not a teaser).\n" : "") +
       (wantGloss ? "4. Glossary: " + glossN + " words per level. Choose words that actually appear in THAT level's passage and that a student at that level would find hard. Define them in language at or below that level.\n" : "") +
-      (wantQ ? "5. Questions: " + qN + " per level, ordered easiest first (literal -> inferential -> evaluative). Each needs a short model \"answer\" for the teacher.\n" : "") +
+      (wantQ ? "5. Questions: " + qN + " per level, ordered easiest first (literal -> inferential -> evaluative). " + (wantMCQ ? "Make them MULTIPLE CHOICE: give each 3-4 plausible options (wrong ones believable, not silly) and put the EXACT text of the correct option in \"answer\".\n" : "Each needs a short model \"answer\" for the teacher.\n") : "") +
       (wantStart ? "6. Sentence starters: " + startN + " per level — short stems the student finishes in writing, pitched at that level.\n" : "") +
-      "7. \"wordCount\" is the number of words in that level's passage. Lower levels should be shorter.\n" +
+      (fullTranslation ? "- Translation: also give \"translation\" = the full passage translated naturally into " + home + " (a complete home-language version, meaning-for-meaning, not word-by-word).\n" : "") +
+      (lengthMode !== "auto" ? "- Length: aim EVERY passage at a " + lengthMode.toUpperCase() + " length (" + LENGTH_WORDS[lengthMode] + " words), the same target across all levels, while still obeying each level's language rules.\n" : "") +
+      "7. \"wordCount\" is the number of words in that level's passage." + (lengthMode === "auto" ? " Lower levels should be shorter." : "") + "\n" +
       "8. Check the JSON parses: balanced braces/brackets, quoted keys, no trailing commas.\n" +
       "\n" +
       "SCHEMA (return JSON of exactly this shape)\n" +
